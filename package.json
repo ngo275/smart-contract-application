@@ -1,0 +1,26 @@
+{
+  "name": "DappSample",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test",
+    "build": "cd client && node build/build.js"
+  },
+  "keywords": [
+    "DApps",
+    "Solidity",
+    "Smart Contract"
+  ],
+  "author": "@ngo275",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-bignumber": "^2.0.2",
+    "decimal.js": "^10.0.1"
+  }
+}
