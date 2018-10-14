@@ -18,7 +18,7 @@
 
             <div style="margin-top: 42px">
             </div>
-            <v-btn class="large-btn" v-on:click="createEvent"><span>CREATE</span></v-btn>
+            <v-btn class="large-btn" @click="createEvent"><span>CREATE</span></v-btn>
           </div>
         </div>
       </div>
@@ -81,7 +81,6 @@ export default {
             console.log(err)
             this.$store.dispatch('stopLoading', 'generateEvent')
           } else {
-            console.log(result)
             this.hide()
             const CreateEvent = this.factoryInstance().CreateEvent()
             CreateEvent.watch((err, result) => {
@@ -103,7 +102,6 @@ export default {
 
 <style lang="scss">
 $background_color: #404142;
-$button_color: #3880FF;
 .box {
   background: white;
   overflow: hidden;
@@ -182,17 +180,6 @@ $button_color: #3880FF;
     background: white;
     span {
       font-weight: 600;
-    }
-  }
-  .button-set {
-    margin-bottom: 8px;
-  }
-  .create-btn {
-    border-color: $button_color;
-    color: $button_color;
-    &:hover {
-      border-color: $button_color;
-      background: $button_color;
     }
   }
   .autocomplete-fix {

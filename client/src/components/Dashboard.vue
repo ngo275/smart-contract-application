@@ -3,34 +3,34 @@
     <h1>Event Smart Contract</h1>
     <event-setup-modal/>
     <div class="wrapper">
-      <v-btn v-on:click="openModal">
+      <v-btn @click="openModal">
         Create Event 🙌
       </v-btn>
       <h3 class="label">We have {{ events.length }} upcoming events!!</h3>
     </div>
-    <img v-if="isEventContractsLoading" id="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
-    <img v-else-if="isGenerateEventLoading" id="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
-    <img v-else-if="isApplyEventLoading" id="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
-    <img v-else-if="isCancelEventLoading" id="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
+    <img v-if="isEventContractsLoading" class="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
+    <img v-else-if="isGenerateEventLoading" class="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
+    <img v-else-if="isApplyEventLoading" class="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
+    <img v-else-if="isCancelEventLoading" class="loader" src="https://loading.io/spinners/spinner/lg.ajax-spinner-preloader.gif">
     <ul class="eventContainer">
-      <li v-for="event in events" v-bind:key="event.address" class="eventItem">
-        <slot v-bind:event="event">
-          <h4>{{ event.address }}</h4>
-          <h4 class="eventName">{{ event.name }}</h4>
+      <li v-for="event in events" :key="event.address" class="eventItem">
+        <slot :event="event">
+          <span class="eventAddress">{{ event.address }}</span>
+          <span class="eventName">{{ event.name }}</span>
           <div class="eventDate">
             on {{ convertDate(event.date) }}
           </div>
           <div class="eventDetail">
             @{{ event.place }}
             {{ event.numberOfApplicants }}/{{ event.capacity }}
-            [{{ event.fee / (10 ** 18) }} ETH]
+            [{{ weiToEther(event.fee) }} ETH]
           </div>
           <div>
             <span v-if="event.isOwner" class="tag">Owner</span>
           </div>
           <div class="actionBtn">
-            <v-btn v-if="event.isApplied" v-on:click="cancel(event)">CANCEL 🤔</v-btn>
-            <v-btn v-else v-on:click="apply(event)">JOIN 😄</v-btn>
+            <v-btn v-if="event.isApplied" @click="cancel(event)">CANCEL 🤔</v-btn>
+            <v-btn v-else @click="apply(event)">JOIN 😄</v-btn>
           </div>
         </slot>
       </li>
@@ -79,7 +79,6 @@ export default {
     isEventContractsLoading (current, prev) {
       // After upcoming event contracts are loaded, load each detail data
       if (!current && prev) {
-        console.log(this.eventInstances)
         this.eventInstances.forEach(i => {
           this.loadEventInfo(i)
         })
@@ -120,7 +119,6 @@ export default {
     loadNewEvent (address) {
       this.events.unshift({ address })
       const instance = this.eventInstances.find(i => i.address === address)
-      console.log(instance)
       this.loadEventInfo(instance)
     },
     loadEventInfo (event) {
@@ -205,6 +203,9 @@ export default {
       const date = new Date(unixtime * 1000).toLocaleString()
       return date.split('T')[0]
     },
+    weiToEther (wei) {
+      return wei / (10 ** 18)
+    },
   },
   components: {
     'EventSetupModal': EventSetupModal,
@@ -233,16 +234,22 @@ export default {
   box-shadow: 2px 3px 6px rgba(0,0,0,0.12), 2px 3px 6px rgba(0,0,0,0.16);
   padding: 8px;
 }
+.eventAddress {
+  margin-top: 4px;
+  display: block;
+  font-size: 14px;
+}
 .eventName {
-}
-.eventDate {
-}
-.evnetDetail {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-weight: 300;
+  display: block;
+  font-size: 20px;
 }
 .tag {
   color: green;
 }
-#loader {
+.loader {
   width:150px;
 }
 *{
