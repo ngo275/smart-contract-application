@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "truffle test",
-    "build": "cd client && node build/build.js"
+    "build": "cd client && node build/build.js",
+    "start": "cd client && yarn start"
   },
   "keywords": [
     "DApps",
